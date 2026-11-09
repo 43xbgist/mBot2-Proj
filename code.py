@@ -14,14 +14,14 @@ def get_all_values(output=True, black_line=True):
  if black_line: over_line = line < 15
  else: over_line = line > 0
  if output:
-     cpi.console.println(str(line) + ' ' + str(distance))
+  cpi.console.println(str(line) + ' ' + str(distance))
 def drive_lines():
 global last_line
  if not last_line == line:
    last_line = line
    
  if line == 7: #L2
-    cpi.mbot2.drive_power(lo_p, -hi_p) #turn left
+  cpi.mbot2.drive_power(lo_p, -hi_p) #turn left
  elif line == 11: #L1
   cpi.mbot2.drive_power(lo_p, -hi_p) #turn left
  elif line == 13: #R1
@@ -33,7 +33,7 @@ global last_line
 #WAIT TO START
 cpi.console.println('Press A')
 while not cpi.controller.is_press('a'):
- cpi.led.on(255,0,0)
+cpi.led.on(255,0,0)
 cpi.console.println('')
 cpi.led.on(0,255,0)
 #MAIN LOOP
