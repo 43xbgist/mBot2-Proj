@@ -7,6 +7,7 @@ def change_speed(set):
 		cyberpi.led.on(255, 0, 0, id = "all")
 	else:
 		cyberpi.led.off(id = "all")
+	last
 
 
 while True:
