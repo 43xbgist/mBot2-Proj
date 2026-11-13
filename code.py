@@ -1,29 +1,28 @@
 import cyberpi
-#add imports up here
-
-
-def measureWall(): 
-    cyberpi.timer.reset() 
-    while True:
-        distanceToWall = cyberpi.ultrasonic2.get(index=1) 
- 
-        if distanceToWall < 15: 
-            cyberpi.mbot2.EM_stop(port="all") 
-            break 
-        else: 
-            cyberpi.mbot2.forward(speed=30) 
- 
-    time = cyberpi.timer.get()
-    
-    wallLength = (20 * 0.3 * time) + 15 
- 
-    cyberpi.console.print("The length of this wall is " + str(wallLength) + " cm") 
-
- 
-
-
+left = 0
+right = 0
+reverse = false
+def clamp_speed():
+	left = max(0, min(left, 30))
+	right = max(0, min(right, 30))
 while True:
-    if cyberpi.controller.is_press('a'): 
-    measureWall() 
-
- 
+    if line == 7:
+    	left -= 0.1
+    	right -= 1
+    	reverse = false
+    elif line == 14:
+    	left -= 1
+    	right -= 0.1
+    	reverse = false
+    elif line == 15:
+    	reverse = true
+    else:
+    	av = left + right
+    	left = 1+(av/2)
+    	right = left
+    	reverse = false
+    clamp_speed()
+    if reverse:
+    	cpi.mbot2.drive_power(-right, -left)
+    else:
+    	cpi.mbot2.drive_power(left, right)
