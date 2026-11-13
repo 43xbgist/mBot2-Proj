@@ -6,6 +6,7 @@ def clamp_speed():
 	left = max(0, min(left, 30))
 	right = max(0, min(right, 30))
 while True:
+	line = cyberpi.quad_rgb_sensor.get_line_sta(index = 1)
     if line == 7:
     	left -= 0.1
     	right -= 1
