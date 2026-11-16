@@ -1,4 +1,4 @@
-import cyberpi
+from cyberpi import *
 left = 0
 right = 0
 reverse = False
@@ -6,24 +6,10 @@ def clamp_speed():
 	left = max(0, min(left, 30))
 	right = max(0, min(right, 30))
 while True:
-	line = cyberpi.quad_rgb_sensor.get_line_sta(index = 1)
-    if line == 7:
-    	left -= 0.1
-    	right -= 1
-    	reverse = False
-    elif line == 14:
-    	left -= 1
-    	right -= 0.1
-    	reverse = False
-    elif line == 15:
-    	reverse = True
-    else:
-    	av = left + right
-    	left = 1+(av/2)
-    	right = left
-    	reverse = False
+	left = (quad_rgb_sensor.get_offset_track(index = 1)*0.3) + 20
+	right = (quad_rgb_sensor.get_offset_track(index = 1)*0.3) + 20
     clamp_speed()
     if reverse:
-    	cpi.mbot2.drive_power(-right, -left)
+    	mbot2.drive_power(right, -left)
     else:
-    	cpi.mbot2.drive_power(left, right)
+    	mbot2.drive_power(-left, right)
