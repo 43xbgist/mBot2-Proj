@@ -1,4 +1,4 @@
-import cyberpi
+from cyberpi import *
 
 if cyberpi.controller.is_press('a'):
     a = measureWall()
