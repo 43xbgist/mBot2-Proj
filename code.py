@@ -2,11 +2,11 @@ from cyberpi import *
 import time 
 
 #Global variables 
-hi_pow=50
-grad_pow = 25
+hi_pow=30
+grad_pow = 15
 low_pow= 10
 rev_pow_s= -10
-rev_pow_f= -50
+rev_pow_f= -25
 line = 0
 RBG_color = 0
 
@@ -95,3 +95,4 @@ console.println(str(RBG_color))
 led.on(0,255,0) 
 while True:
     main_loop()
+
