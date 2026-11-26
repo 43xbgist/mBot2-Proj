@@ -43,22 +43,34 @@ def main_loop(): # ----- MAIN LOOP ----- #
             led.on(indicate[0], indicate[1], indicate[2], id=5)
         mbot2.drive_power(left,-right)
 
+
 def wall(): # ----- OBSTACAL AVOIDENCE ----- #
-    led.on(0,0,0)
-    mbot2.drive_power(rotate, rotate)
-    led.on(search[0], search[1], search[2], id=1)
-    led.on(search[0], search[1], search[2], id=2)
-    time.sleep(0.5)
-    a = ultrasonic2.get(index = 1)
-    led.on(0,0,0)
-    mbot2.drive_power(-rotate,-rotate)
-    led.on(search[0], search[1], search[2], id=5)
-    led.on(search[0], search[1], search[2], id=4)
-    time.sleep(1)
-    led.on(0,0,0)
-    if a>ultrasonic2.get(index = 1):# compare left and right
-        mbot2.drive_power(rotate, rotate)
-        time.sleep(1)
+    mbot2.backward(speed=30, duration=2)
+
+    distanceToObstacle = ultrasonic2.get(index=1)
+
+    motorSpeedB = 15
+    motorSpeedA = motorSpeedB * ((distanceToObstacle + 4) / (distanceToObstacle - 4))
+
+    time = (3.14159 * 8) / (2 * (motorSpeedA - motorSpeedB))
+
+    timer.reset()
+    while timer.get() < time:
+        mbot2.drive_speed(motorSpeedA, motorSpeedB)
+
+    mbot2.EM_stop(port="all")
+
+    angularDisplacementA = (motorSpeedA/100 * time)
+    angularDisplacementB = (motorSpeedB/100 * time)
+    averageAngularDisplacement = (angularDisplacementA + angularDisplacementB) / 2
+    turnMeasurement = averageAngularDisplacement * distanceToObstacle
+
+    console.print(turnMeasurement)
+
+    if ultrasonic2.get(index=1) >= 12:
+        mbot2.forward(speed=30, duration=2)
+    else:
+        console.print("Turn not possible")
 
 
 while True: # ----- SETUP LOOP ----- #
@@ -75,6 +87,8 @@ while True: # ----- SETUP LOOP ----- #
     console.println('Go, go, go!!!')
     t=time.time()
     while True: # ----- EXTERNAL LOOP ----- #
+        if time.time() > t + 5:# Clear text after 5s
+            console.clear()
         if controller.is_press('a'):# Pausing
             console.clear()
             console.println("Paused.")
@@ -90,7 +104,5 @@ while True: # ----- SETUP LOOP ----- #
                 l=math.pow(math.sin(math.pi*t),2)
                 led.on(finish[0]*l, finish[1]*l, finish[2]*l)
                 t+=0.01
-        elif time.time() > t + 5:# Clear text after 5s
-            console.clear()
         else:
             main_loop()
