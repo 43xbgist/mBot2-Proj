@@ -45,8 +45,6 @@ def main_loop(): # ----- MAIN LOOP ----- #
 
 
 def wall(): # ----- OBSTACAL AVOIDENCE ----- #
-    mbot2.backward(speed=30, duration=2)
-
     distanceToObstacle = ultrasonic2.get(index=1)
 
     motorSpeedB = 15
@@ -67,9 +65,7 @@ def wall(): # ----- OBSTACAL AVOIDENCE ----- #
 
     console.print(turnMeasurement)
 
-    if ultrasonic2.get(index=1) >= 12:
-        mbot2.forward(speed=30, duration=2)
-    else:
+    if ultrasonic2.get(index=1) <= 12:
         console.print("Turn not possible")
 
 
