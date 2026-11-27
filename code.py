@@ -47,26 +47,28 @@ def main_loop(): # ----- MAIN LOOP ----- #
 def wall(): # ----- OBSTACAL AVOIDENCE ----- #
     distanceToObstacle = ultrasonic2.get(index=1)
 
-    motorSpeedB = 15
+    motorSpeedB = rotate
     motorSpeedA = motorSpeedB * ((distanceToObstacle + 4) / (distanceToObstacle - 4))
 
     time = (3.14159 * 8) / (2 * (motorSpeedA - motorSpeedB))
-
-    timer.reset()
-    while timer.get() < time:
-        mbot2.drive_speed(motorSpeedA, motorSpeedB)
-
-    mbot2.EM_stop(port="all")
 
     angularDisplacementA = (motorSpeedA/100 * time)
     angularDisplacementB = (motorSpeedB/100 * time)
     averageAngularDisplacement = (angularDisplacementA + angularDisplacementB) / 2
     turnMeasurement = averageAngularDisplacement * distanceToObstacle
+    
+    timer.reset()
+    while timer.get() < time:
+        if angle_sensor.get(index = 1)>0:
+            mbot2.drive_speed(-motorSpeedA, -motorSpeedB)
+        else:
+            mbot2.drive_speed(motorSpeedA, motorSpeedB)
+            turnA = turnMeasurement0
+    mbot2.EM_stop(port="all")
+    #console.print(turnMeasurement)
 
-    console.print(turnMeasurement)
-
-    if ultrasonic2.get(index=1) <= 12:
-        console.print("Turn not possible")
+    #if ultrasonic2.get(index=1) <= 12:
+        #console.print("Turn not possible")
 
 
 while True: # ----- SETUP LOOP ----- #
@@ -82,6 +84,7 @@ while True: # ----- SETUP LOOP ----- #
     time.sleep(1)
     console.println('Go, go, go!!!')
     t=time.time()
+    angle_sensor.reset(index = 1)
     while True: # ----- EXTERNAL LOOP ----- #
         if time.time() > t + 5:# Clear text after 5s
             console.clear()
