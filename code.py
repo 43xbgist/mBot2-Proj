@@ -63,12 +63,12 @@ def wall(): # ----- OBSTACAL AVOIDENCE ----- #
             mbot2.drive_speed(-motorSpeedA, -motorSpeedB)
         else:
             mbot2.drive_speed(motorSpeedA, motorSpeedB)
-            turnA = turnMeasurement0
-    mbot2.EM_stop(port="all")
-    #console.print(turnMeasurement)
 
-    #if ultrasonic2.get(index=1) <= 12:
-        #console.print("Turn not possible")
+    mbot2.EM_stop(port="all")
+    console.print(turnMeasurement)
+
+    if ultrasonic2.get(index=1) <= 12:
+        console.print("Turn not possible")
 
 
 while True: # ----- SETUP LOOP ----- #
