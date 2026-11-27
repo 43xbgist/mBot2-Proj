@@ -13,7 +13,6 @@ rotate = 30
 #LED colours
 finish = [55, 255, 55]
 standby = [255, 80, 0]
-search = [0, 111, 255]
 indicate = [255, 200, 0]
 reverse = [250, 250, 200]
 
@@ -62,10 +61,12 @@ def wall(): # ----- OBSTACAL AVOIDENCE ----- #
     
     timer.reset()
     if totalTurn<0:
+        led.on(indicate[0], indicate[1], indicate[2], id=5)
         while timer.get() < time:
             mbot2.drive_speed(-motorSpeedB, -motorSpeedA)
         totalTurn += turnMeasurement
     else:
+        led.on(indicate[0], indicate[1], indicate[2], id=1)
         while timer.get() < time:
             mbot2.drive_speed(motorSpeedA, motorSpeedB)
         totalTurn -= turnMeasurement
