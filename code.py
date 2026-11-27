@@ -24,6 +24,7 @@ def main_loop(): # ----- MAIN LOOP ----- #
         mbot2.drive_power(0,0)
         wall()
     else: # ----- MOVEMENT ----- #
+        #totalTurn *= 0.9999
         left = speed
         right = speed
         if quad_rgb_sensor.is_background("L2", index = 1):
@@ -46,6 +47,7 @@ def main_loop(): # ----- MAIN LOOP ----- #
 
 
 def wall(): # ----- OBSTACAL AVOIDENCE ----- #
+    global totalTurn
     distanceToObstacle = ultrasonic2.get(index=1)
 
     motorSpeedB = rotate
@@ -59,13 +61,14 @@ def wall(): # ----- OBSTACAL AVOIDENCE ----- #
     turnMeasurement = averageAngularDisplacement * distanceToObstacle
     
     timer.reset()
-    while timer.get() < time:
-        if totalTurn<0:
-            mbot2.drive_speed(-motorSpeedA, -motorSpeedB)
-            totalTurn += turnMeasurement
-        else:
+    if totalTurn<0:
+        while timer.get() < time:
+            mbot2.drive_speed(-motorSpeedB, -motorSpeedA)
+        totalTurn += turnMeasurement
+    else:
+        while timer.get() < time:
             mbot2.drive_speed(motorSpeedA, motorSpeedB)
-            totalTurn -= turnMeasurement
+        totalTurn -= turnMeasurement
 
     mbot2.EM_stop(port="all")
     console.print(turnMeasurement)
