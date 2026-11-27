@@ -24,7 +24,6 @@ def main_loop(): # ----- MAIN LOOP ----- #
         mbot2.drive_power(0,0)
         wall()
     else: # ----- MOVEMENT ----- #
-        totalTurn *= 0.9999
         left = speed
         right = speed
         if quad_rgb_sensor.is_background("L2", index = 1):
