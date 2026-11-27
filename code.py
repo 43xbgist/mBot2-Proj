@@ -4,6 +4,7 @@ import math
 
 left = 0
 right = 0
+totalTurn = 0
 
 #Speed settings
 speed = 20
@@ -59,10 +60,12 @@ def wall(): # ----- OBSTACAL AVOIDENCE ----- #
     
     timer.reset()
     while timer.get() < time:
-        if angle_sensor.get(index = 1)>0:
+        if totalTurn<0:
             mbot2.drive_speed(-motorSpeedA, -motorSpeedB)
+            totalTurn += turnMeasurement
         else:
             mbot2.drive_speed(motorSpeedA, motorSpeedB)
+            totalTurn -= turnMeasurement
 
     mbot2.EM_stop(port="all")
     console.print(turnMeasurement)
@@ -84,7 +87,6 @@ while True: # ----- SETUP LOOP ----- #
     time.sleep(1)
     console.println('Go, go, go!!!')
     t=time.time()
-    angle_sensor.reset(index = 1)
     while True: # ----- EXTERNAL LOOP ----- #
         if time.time() > t + 5:# Clear text after 5s
             console.clear()
